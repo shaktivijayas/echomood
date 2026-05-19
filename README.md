@@ -1,354 +1,228 @@
-# Mood Helper - Cloud Sync Dashboard with AI
+<div align="center">
 
-A comprehensive cross-platform cloud synchronization service with integrated Gemini AI mood-response feature. Built with React, Node.js, Flask, and deployed using Docker and Kubernetes.
+<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=180&section=header&text=echomood&fontSize=56&fontColor=fff&animation=twinkling&fontAlignY=38&desc=Cloud%20Sync%20%2B%20AI%20Mood%20Companion%20%7C%20Microservices%20on%20K8s&descSize=16&descColor=fff&descAlignY=60" />
 
-## 🌟 Features
+<br/>
 
-### Core Functionality
-- **User Authentication**: JWT-based login/signup system
-- **File Management**: Upload, download, and sync files across devices
-- **Device Management**: Register and manage multiple devices
-- **Activity Monitoring**: Track sync activities and device events
-- **Storage Analytics**: Monitor storage usage and file breakdowns
+[![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev)
+[![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org)
+[![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
+[![Gemini](https://img.shields.io/badge/Gemini%20AI-8E75B2?style=for-the-badge&logo=google&logoColor=white)](https://ai.google.dev)
+[![Kubernetes](https://img.shields.io/badge/Kubernetes-326CE5?style=for-the-badge&logo=kubernetes&logoColor=white)](https://kubernetes.io)
 
-### AI Integration
-- **Mood AI**: Chat with Gemini AI to express feelings and get empathetic responses
-- **Quick Mood Selection**: Pre-defined mood buttons for easy expression
-- **Conversation History**: Persistent chat interface with AI
+![License](https://img.shields.io/badge/License-MIT-00d4ff?style=flat-square)
+![Status](https://img.shields.io/badge/Status-Active-brightgreen?style=flat-square)
+![PRs](https://img.shields.io/badge/PRs-Welcome-7c3aed?style=flat-square)
 
-### Technical Features
-- **Modern UI**: Built with React + TailwindCSS + shadcn/ui
-- **Responsive Design**: Works on desktop, tablet, and mobile
-- **Real-time Updates**: Live sync status and activity monitoring
-- **Secure**: JWT authentication, input validation, and security headers
-- **Scalable**: Microservices architecture with Docker and Kubernetes
+</div>
+
+---
+
+## 🌥️ What is echomood?
+
+**echomood** is a full-stack cloud synchronization platform with an integrated AI mood companion. Sync files seamlessly across all your devices — then talk to an empathetic Gemini-powered AI when you need a moment to breathe. Built as a production-grade microservices system, containerized with Docker, and orchestrated with Kubernetes.
+
+> Cloud sync for your files. AI support for your mind. One platform for both.
+
+---
+
+## ✨ Features
+
+- 📁 **Cross-Device File Sync** — Upload, download, and sync files across unlimited registered devices
+- 🧠 **Gemini AI Mood Companion** — Express how you're feeling and receive empathetic, context-aware responses
+- 💬 **Persistent Chat History** — Continue conversations with full context across sessions
+- 📊 **Storage Analytics** — Real-time dashboards for storage usage, file breakdown, and device activity
+- 🔐 **JWT Authentication** — Secure login with bcrypt password hashing and 7-day token expiry
+- ☸️ **Kubernetes Native** — Full K8s manifests for production-grade horizontal scaling
+- 🐳 **Docker Compose** — One command to spin up the entire stack locally
+- 🔍 **Activity Monitoring** — Track every sync event, device connection, and file operation
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer | Technology |
+|:---|:---|
+| **Frontend** | React 18, Tailwind CSS, shadcn/ui |
+| **Backend API** | Node.js, Express |
+| **AI Service** | Python, Flask, Google Gemini API |
+| **Database** | MySQL 8.0 |
+| **File Storage** | Nextcloud |
+| **Auth** | JWT, bcrypt |
+| **Containers** | Docker, Docker Compose |
+| **Orchestration** | Kubernetes |
+
+---
 
 ## 🏗️ Architecture
 
 ```
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Frontend      │    │   Backend       │    │   Flask AI      │
-│   (React)       │◄──►│   (Node.js)     │◄──►│   (Gemini)      │
-│   Port: 3000    │    │   Port: 5000    │    │   Port: 5001    │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-         │                       │
-         │                       ▼
-         │              ┌─────────────────┐
-         │              │   Database      │
-         │              │   (MySQL)       │
-         │              │   Port: 3306    │
-         │              └─────────────────┘
-         │
-         ▼
-┌─────────────────┐
-│   Nextcloud     │
-│   (File Storage)│
-│   Port: 8080    │
-└─────────────────┘
+┌──────────────────┐    ┌──────────────────┐    ┌──────────────────┐
+│    React UI      │    │  Node.js API     │    │  Flask AI        │
+│  (Tailwind +     │◄──►│  (Express)       │◄──►│  (Gemini)        │
+│   shadcn/ui)     │    │  Port: 5000      │    │  Port: 5001      │
+│  Port: 3000      │    └────────┬─────────┘    └──────────────────┘
+└──────┬───────────┘             │
+       │                         ▼
+       │               ┌──────────────────┐
+       │               │  MySQL 8.0       │
+       │               │  (Auth + Files   │
+       │               │   + Devices)     │
+       │               │  Port: 3306      │
+       │               └──────────────────┘
+       ▼
+┌──────────────────┐
+│   Nextcloud      │
+│  (File Storage)  │
+│  Port: 8080      │
+└──────────────────┘
 ```
 
-## 🚀 Quick Start
+---
+
+## 🚀 Getting Started
 
 ### Prerequisites
+
 - Node.js 18+
 - Python 3.11+
 - Docker & Docker Compose
-- MySQL 8.0+
-- Git
+- MySQL 8.0+ (or use Docker)
 
-### 1. Clone the Repository
-```bash
-git clone <repository-url>
-cd mood-helper
-```
+### Installation
 
-### 2. Environment Setup
 ```bash
-# Copy environment file
+git clone https://github.com/shaktivijayas/echomood.git
+cd echomood
 cp env.example .env
-
-# Edit .env with your configuration
-nano .env
 ```
 
-**Required Environment Variables:**
+### Environment Variables
+
 ```env
-# Get your Gemini API key from Google AI Studio
-GEMINI_API_KEY=your-gemini-api-key-here
+# Google AI Studio → https://aistudio.google.com/
+GEMINI_API_KEY=your_gemini_api_key
 
-# Change JWT secret for production
-JWT_SECRET=your-super-secret-jwt-key-change-in-production
+# Change in production
+JWT_SECRET=your_super_secret_jwt_key
+
+# Database
+MYSQL_ROOT_PASSWORD=rootpassword
+MYSQL_DATABASE=echomood
+MYSQL_USER=echomood
+MYSQL_PASSWORD=echomood_password
+
+# Nextcloud
+NEXTCLOUD_URL=http://localhost:8080
+NEXTCLOUD_USER=admin
+NEXTCLOUD_PASSWORD=admin
 ```
 
-### 3. Install Dependencies
+### Run with Docker Compose
+
 ```bash
-# Install root dependencies
-npm install
-
-# Install frontend dependencies
-cd frontend && npm install && cd ..
-
-# Install backend dependencies
-cd backend && npm install && cd ..
-
-# Install Flask dependencies
-cd flask-gemini && pip install -r requirements.txt && cd ..
-```
-
-### 4. Start with Docker Compose
-```bash
-# Start all services
+# Start all 5 services
 docker-compose up -d
 
 # View logs
 docker-compose logs -f
 
-# Stop services
+# Tear down
 docker-compose down
 ```
 
-### 5. Access the Application
-- **Frontend**: http://localhost:3000
-- **Backend API**: http://localhost:5000
-- **Flask AI**: http://localhost:5001
-- **Nextcloud**: http://localhost:8080
+### Run Locally (Development)
 
-## 🛠️ Development
-
-### Local Development
 ```bash
-# Start all services in development mode
+# Install all dependencies
+npm install
+cd frontend && npm install && cd ..
+cd backend && npm install && cd ..
+cd flask-gemini && pip install -r requirements.txt && cd ..
+
+# Start all services
 npm run dev
-
-# Or start individual services
-npm run frontend:dev  # React dev server
-npm run backend:dev   # Node.js with nodemon
-npm run flask:dev     # Flask development server
 ```
 
-### API Endpoints
+**Service URLs:**
+- Frontend: `http://localhost:3000`
+- Backend API: `http://localhost:5000`
+- Flask AI: `http://localhost:5001`
+- Nextcloud: `http://localhost:8080`
 
-#### Authentication
-- `POST /api/auth/register` - User registration
-- `POST /api/auth/login` - User login
-- `GET /api/auth/verify` - Verify JWT token
-- `POST /api/auth/logout` - User logout
-
-#### Files
-- `GET /api/files` - List user files
-- `POST /api/files/upload` - Upload file
-- `GET /api/files/download/:id` - Download file
-- `DELETE /api/files/:id` - Delete file
-
-#### Devices
-- `GET /api/devices` - List user devices
-- `POST /api/devices/register` - Register device
-- `PUT /api/devices/:id/status` - Update device status
-- `DELETE /api/devices/:id` - Remove device
-
-#### Dashboard
-- `GET /api/dashboard/stats` - Get dashboard statistics
-- `GET /api/dashboard/activity` - Get activity log
-- `GET /api/dashboard/storage-breakdown` - Get storage breakdown
-
-#### Mood AI
-- `POST /gemini` - Send mood to Gemini AI
-- `GET /health` - Health check
-
-## 🐳 Docker Deployment
-
-### Build Images
-```bash
-# Build all images
-docker-compose build
-
-# Build specific service
-docker-compose build frontend
-docker-compose build backend
-docker-compose build flask-gemini
-```
-
-### Production Deployment
-```bash
-# Set production environment
-export NODE_ENV=production
-export FLASK_ENV=production
-
-# Start services
-docker-compose up -d
-```
+---
 
 ## ☸️ Kubernetes Deployment
 
-### Prerequisites
-- Kubernetes cluster (1.20+)
-- kubectl configured
-- Ingress controller (nginx recommended)
-
-### Deploy to Kubernetes
 ```bash
 # Apply all manifests
 kubectl apply -f k8s/
 
-# Or use kustomize
-kubectl apply -k k8s/
+# Check rollout
+kubectl get pods -n echomood
+kubectl get services -n echomood
 
-# Check deployment status
-kubectl get pods -n mood-helper
-kubectl get services -n mood-helper
+# Port-forward for local access
+kubectl port-forward -n echomood service/frontend-service 3000:3000
+kubectl port-forward -n echomood service/backend-service 5000:5000
 ```
-
-### Access the Application
-```bash
-# Port forward for local access
-kubectl port-forward -n mood-helper service/frontend-service 3000:3000
-kubectl port-forward -n mood-helper service/backend-service 5000:5000
-kubectl port-forward -n mood-helper service/flask-gemini-service 5001:5001
-
-# Or configure ingress for external access
-kubectl get ingress -n mood-helper
-```
-
-## 🔧 Configuration
-
-### Database Setup
-The application automatically creates the required database tables on first run. For manual setup:
-
-```sql
-CREATE DATABASE mood_helper;
-CREATE USER 'mood_helper'@'%' IDENTIFIED BY 'mood_helper_password';
-GRANT ALL PRIVILEGES ON mood_helper.* TO 'mood_helper'@'%';
-FLUSH PRIVILEGES;
-```
-
-### Gemini AI Setup
-1. Visit [Google AI Studio](https://aistudio.google.com/)
-2. Create a new project
-3. Generate an API key
-4. Add the key to your `.env` file
-
-### Nextcloud Integration
-1. Access Nextcloud at http://localhost:8080
-2. Login with admin/admin
-3. Configure the API credentials in your `.env` file
-
-## 📱 Usage
-
-### Getting Started
-1. **Register**: Create a new account or login
-2. **Add Device**: Register your first device
-3. **Upload Files**: Start syncing files across devices
-4. **Mood AI**: Share your feelings with the AI assistant
-
-### File Management
-- Upload files by clicking the upload button
-- View files in grid or list mode
-- Search and filter files
-- Download or delete files as needed
-
-### Device Management
-- Register new devices with unique IDs
-- Monitor device connection status
-- Enable/disable device sync
-- Remove old devices
-
-### Mood AI
-- Express your feelings in natural language
-- Use quick mood buttons for common emotions
-- Get empathetic AI responses
-- Continue conversations with context
-
-## 🔒 Security
-
-### Authentication
-- JWT tokens with 7-day expiration
-- Password hashing with bcrypt
-- Token verification on protected routes
-
-### Data Protection
-- Input validation and sanitization
-- SQL injection prevention
-- XSS protection headers
-- CORS configuration
-
-### File Security
-- User-specific file isolation
-- File type validation
-- Size limits and compression
-- Secure file serving
-
-## 🚨 Troubleshooting
-
-### Common Issues
-
-#### Database Connection
-```bash
-# Check database status
-docker-compose logs db
-
-# Reset database
-docker-compose down -v
-docker-compose up -d
-```
-
-#### Gemini AI Not Working
-```bash
-# Check API key
-echo $GEMINI_API_KEY
-
-# Test Flask service
-curl http://localhost:5001/health
-```
-
-#### File Upload Issues
-```bash
-# Check upload directory permissions
-ls -la backend/uploads/
-
-# Check backend logs
-docker-compose logs backend
-```
-
-### Logs
-```bash
-# View all logs
-docker-compose logs
-
-# View specific service logs
-docker-compose logs frontend
-docker-compose logs backend
-docker-compose logs flask-gemini
-```
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- [React](https://reactjs.org/) - Frontend framework
-- [TailwindCSS](https://tailwindcss.com/) - CSS framework
-- [shadcn/ui](https://ui.shadcn.com/) - UI components
-- [Express.js](https://expressjs.com/) - Backend framework
-- [Flask](https://flask.palletsprojects.com/) - Python web framework
-- [Google Gemini](https://ai.google.dev/) - AI language model
-- [Nextcloud](https://nextcloud.com/) - File storage platform
-
-## 📞 Support
-
-For support and questions:
-- Create an issue in the repository
-- Check the troubleshooting section
-- Review the API documentation
 
 ---
 
-**Made with ❤️ for better cloud sync and mental wellness**
+## 📁 Project Structure
+
+```
+echomood/
+├── frontend/             # React + Tailwind + shadcn/ui
+│   ├── src/
+│   │   ├── components/   # UI components (FileCard, MoodChat, DeviceList)
+│   │   ├── pages/        # Dashboard, Files, Devices, Mood
+│   │   └── hooks/        # useAuth, useFiles, useDevices
+│   └── Dockerfile
+├── backend/              # Node.js + Express API
+│   ├── src/
+│   │   ├── routes/       # auth, files, devices, dashboard
+│   │   ├── middleware/   # JWT validation, file upload
+│   │   └── models/       # MySQL query helpers
+│   └── Dockerfile
+├── flask-gemini/         # Python Flask + Gemini AI service
+│   ├── app.py            # /gemini endpoint
+│   ├── requirements.txt
+│   └── Dockerfile
+├── k8s/                  # Kubernetes manifests
+│   ├── namespace.yaml
+│   ├── frontend.yaml
+│   ├── backend.yaml
+│   ├── flask-gemini.yaml
+│   ├── mysql.yaml
+│   └── nextcloud.yaml
+├── docker-compose.yml
+├── env.example
+└── package.json
+```
+
+---
+
+## 🔌 API Reference
+
+| Method | Endpoint | Description |
+|:---|:---|:---|
+| `POST` | `/api/auth/register` | Create account |
+| `POST` | `/api/auth/login` | Get JWT token |
+| `GET` | `/api/files` | List user files |
+| `POST` | `/api/files/upload` | Upload and sync file |
+| `GET` | `/api/files/download/:id` | Download file |
+| `GET` | `/api/devices` | List registered devices |
+| `POST` | `/api/devices/register` | Register new device |
+| `GET` | `/api/dashboard/stats` | Storage + activity stats |
+| `POST` | `/gemini` | Send mood to AI companion |
+
+---
+
+## 👨‍💻 Author
+
+**Shakti Vijay A S** — [GitHub](https://github.com/shaktivijayas) · [LinkedIn](https://linkedin.com/in/ShakthiVijay)
+
+<div align="center">
+<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=100&section=footer&animation=twinkling" />
+</div>
