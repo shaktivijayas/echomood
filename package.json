@@ -1,0 +1,24 @@
+{
+  "name": "mood-helper-sync-dashboard",
+  "version": "1.0.0",
+  "description": "Cross-platform cloud synchronization service with Gemini AI mood-response feature",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run frontend:dev\" \"npm run backend:dev\" \"npm run flask:dev\"",
+    "frontend:dev": "cd frontend && npm run dev",
+    "backend:dev": "cd backend && npm run dev",
+    "flask:dev": "cd flask-gemini && python app.py",
+    "build": "cd frontend && npm run build",
+    "start": "cd backend && npm start",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "k8s:apply": "kubectl apply -f k8s/",
+    "k8s:delete": "kubectl delete -f k8s/"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "keywords": ["cloud-sync", "mood-ai", "dashboard", "nextcloud", "gemini"],
+  "author": "Mood Helper Team",
+  "license": "MIT"
+}

@@ -1,0 +1,113 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_API_URL=http://localhost:5000
+      - REACT_APP_GEMINI_URL=http://localhost:5001
+    depends_on:
+      - backend
+      - flask-gemini
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    networks:
+      - mood-helper-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=development
+      - JWT_SECRET=${JWT_SECRET:-your-super-secret-jwt-key-change-in-production}
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_NAME=mood_helper
+      - DB_USER=mood_helper
+      - DB_PASSWORD=mood_helper_password
+      - NEXTCLOUD_URL=http://nextcloud:8080
+      - NEXTCLOUD_USERNAME=admin
+      - NEXTCLOUD_PASSWORD=admin
+    depends_on:
+      - db
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+      - backend_uploads:/app/uploads
+    networks:
+      - mood-helper-network
+
+  flask-gemini:
+    build:
+      context: ./flask-gemini
+      dockerfile: Dockerfile
+    ports:
+      - "5001:5001"
+    environment:
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - FLASK_ENV=development
+      - PORT=5001
+    volumes:
+      - ./flask-gemini:/app
+    networks:
+      - mood-helper-network
+
+  nextcloud:
+    image: nextcloud:latest
+    ports:
+      - "8080:80"
+    environment:
+      - MYSQL_HOST=db
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+      - MYSQL_PASSWORD=nextcloud
+      - NEXTCLOUD_ADMIN_USER=admin
+      - NEXTCLOUD_ADMIN_PASSWORD=admin
+    depends_on:
+      - db
+    volumes:
+      - nextcloud_data:/var/www/html
+    networks:
+      - mood-helper-network
+
+  db:
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpassword
+      - MYSQL_DATABASE=mood_helper
+      - MYSQL_USER=mood_helper
+      - MYSQL_PASSWORD=mood_helper_password
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - mood-helper-network
+
+  # Redis for caching and session management
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - mood-helper-network
+
+volumes:
+  nextcloud_data:
+  db_data:
+  redis_data:
+  backend_uploads:
+
+networks:
+  mood-helper-network:
+    driver: bridge
