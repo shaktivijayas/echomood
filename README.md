@@ -1,18 +1,28 @@
 <div align="center">
 
-<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=180&section=header&text=echomood&fontSize=56&fontColor=fff&animation=twinkling&fontAlignY=38&desc=Cloud%20Sync%20%2B%20AI%20Mood%20Companion%20%7C%20Microservices%20on%20K8s&descSize=16&descColor=fff&descAlignY=60" />
+<pre>
+            _
+   ___  ___| |__   ___  _ __ ___   ___   ___   __| |
+  / _ \/ __| '_ \ / _ \| '_ ` _ \ / _ \ / _ \ / _` |
+ |  __/ (__| | | | (_) | | | | | | (_) | (_) | (_| |
+  \___|\___|_| |_|\___/|_| |_| |_|\___/ \___/ \__,_|
+</pre>
+
+**Cloud file sync across your devices, plus a Gemini-powered mood companion — one dashboard for both.**
+
+The app titles itself **Mood Helper**.
 
 <br/>
 
-[![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev)
-[![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org)
-[![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
-[![Gemini](https://img.shields.io/badge/Gemini%20AI-8E75B2?style=for-the-badge&logo=google&logoColor=white)](https://ai.google.dev)
-[![Kubernetes](https://img.shields.io/badge/Kubernetes-326CE5?style=for-the-badge&logo=kubernetes&logoColor=white)](https://kubernetes.io)
+[![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev)
+[![Node.js](https://img.shields.io/badge/Node.js-Express-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://expressjs.com)
+[![SQLite](https://img.shields.io/badge/SQLite-003B57?style=for-the-badge&logo=sqlite&logoColor=white)](https://sqlite.org)
+[![Gemini](https://img.shields.io/badge/Gemini-mood%20AI-8E75FF?style=for-the-badge&logo=google&logoColor=white)](https://ai.google.dev)
+[![Kubernetes](https://img.shields.io/badge/Kubernetes-manifests-326CE5?style=for-the-badge&logo=kubernetes&logoColor=white)](https://kubernetes.io)
 
-![License](https://img.shields.io/badge/License-MIT-00d4ff?style=flat-square)
-![Status](https://img.shields.io/badge/Status-Active-brightgreen?style=flat-square)
-![PRs](https://img.shields.io/badge/PRs-Welcome-7c3aed?style=flat-square)
+![License](https://img.shields.io/badge/License-MIT-lightgrey?style=flat-square)
+![Status](https://img.shields.io/badge/Status-demo-yellow?style=flat-square&labelColor=18181b)
+![Stack](https://img.shields.io/badge/stack-MERN--ish%20%2B%20Docker-00d4ff?style=flat-square&labelColor=18181b)
 
 </div>
 
@@ -20,22 +30,30 @@
 
 ## 🌥️ What is echomood?
 
-**echomood** is a full-stack cloud synchronization platform with an integrated AI mood companion. Sync files seamlessly across all your devices — then talk to an empathetic Gemini-powered AI when you need a moment to breathe. Built as a production-grade microservices system, containerized with Docker, and orchestrated with Kubernetes.
+Two things a person juggles daily — their **files** and their **headspace**. echomood puts both behind one login: register your devices, sync files between them, watch storage and activity on a dashboard — and when you need it, tell the **mood companion** how you're feeling and get an empathetic, Gemini-generated reply.
 
-> Cloud sync for your files. AI support for your mind. One platform for both.
+> Cloud sync for your files. AI support for your mind. One dashboard for both.
+
+---
+
+## 📸 The app, running
+
+> The React frontend, built and served by the Express backend on `:5000`. Auth-gated — the rest of the app (Dashboard, Files, Devices, Activity, Mood AI, Settings) lives behind this.
+
+<img src="docs/screenshots/login.png" alt="echomood / Mood Helper — sign-in screen" width="760" />
 
 ---
 
 ## ✨ Features
 
-- 📁 **Cross-Device File Sync** — Upload, download, and sync files across unlimited registered devices
-- 🧠 **Gemini AI Mood Companion** — Express how you're feeling and receive empathetic, context-aware responses
-- 💬 **Persistent Chat History** — Continue conversations with full context across sessions
-- 📊 **Storage Analytics** — Real-time dashboards for storage usage, file breakdown, and device activity
-- 🔐 **JWT Authentication** — Secure login with bcrypt password hashing and 7-day token expiry
-- ☸️ **Kubernetes Native** — Full K8s manifests for production-grade horizontal scaling
-- 🐳 **Docker Compose** — One command to spin up the entire stack locally
-- 🔍 **Activity Monitoring** — Track every sync event, device connection, and file operation
+- 📁 **File sync** — upload / list / download / delete, scoped per user; `UPLOAD_DIR` on disk.
+- 💻 **Device registry** — register named devices; the dashboard tracks connections and activity.
+- 🧠 **Gemini mood companion** — `POST /api/gemini` sends a free-text mood; the prompt asks for a warm, 2–3-sentence empathetic reply.
+- 📊 **Dashboard stats** — `/api/dashboard/stats`, `/storage-breakdown`, `/activity` feed usage charts and an event log.
+- 🔐 **JWT auth** — bcrypt hashing, `Bearer` tokens, a `/api/auth/verify` check on load; token kept in `localStorage`.
+- 🌗 **Theming** — `ThemeContext` light/dark toggle; Tailwind + Radix UI primitives (shadcn-style `Button`, `Card`, `Tabs`, …).
+- 🐳 **Docker Compose** — `docker-compose.yml` for the local stack.
+- ☸️ **Kubernetes manifests** — `k8s/` (namespace, frontend, backend, flask-gemini, mysql, redis, ingress, kustomization) for a scaled-out deployment.
 
 ---
 
@@ -43,128 +61,74 @@
 
 | Layer | Technology |
 |:---|:---|
-| **Frontend** | React 18, Tailwind CSS, shadcn/ui |
-| **Backend API** | Node.js, Express |
-| **AI Service** | Python, Flask, Google Gemini API |
-| **Database** | MySQL 8.0 |
-| **File Storage** | Nextcloud |
-| **Auth** | JWT, bcrypt |
-| **Containers** | Docker, Docker Compose |
-| **Orchestration** | Kubernetes |
+| **Frontend** | React 18 (CRA / react-scripts) · React Router 6 · Tailwind CSS · Radix UI · lucide-react |
+| **Backend API** | Node.js · Express · helmet · express-rate-limit · morgan · compression |
+| **Database** | SQLite (`backend/database.sqlite`, tables created on boot); `mysql2` is a dependency for the K8s MySQL variant |
+| **AI** | Google Gemini REST API — from `backend/routes/gemini.js` (Node); a parallel Flask service (`backend/app.py`) is the container split-out |
+| **Auth** | jsonwebtoken · bcryptjs |
+| **Uploads** | multer → local `UPLOAD_DIR` |
+| **Ops** | Docker · Docker Compose · Kubernetes (`k8s/`) |
 
 ---
 
 ## 🏗️ Architecture
 
+```mermaid
+flowchart TD
+    ui["React SPA (CRA)<br/>Dashboard · Files · Devices · Activity · Mood AI · Settings"]
+    api["Express API :5000<br/>helmet · rate-limit · JWT middleware"]
+    db[("SQLite<br/>users · devices · files · activity")]
+    disk[["UPLOAD_DIR<br/>uploaded files"]]
+    gem["Gemini REST<br/>generativelanguage.googleapis.com"]
+
+    ui -- "Bearer JWT" --> api
+    api --> db
+    api -- "multer" --> disk
+    api -- "POST /api/gemini" --> gem
+    api -- "serves build/" --> ui
 ```
-┌──────────────────┐    ┌──────────────────┐    ┌──────────────────┐
-│    React UI      │    │  Node.js API     │    │  Flask AI        │
-│  (Tailwind +     │◄──►│  (Express)       │◄──►│  (Gemini)        │
-│   shadcn/ui)     │    │  Port: 5000      │    │  Port: 5001      │
-│  Port: 3000      │    └────────┬─────────┘    └──────────────────┘
-└──────┬───────────┘             │
-       │                         ▼
-       │               ┌──────────────────┐
-       │               │  MySQL 8.0       │
-       │               │  (Auth + Files   │
-       │               │   + Devices)     │
-       │               │  Port: 3306      │
-       │               └──────────────────┘
-       ▼
-┌──────────────────┐
-│   Nextcloud      │
-│  (File Storage)  │
-│  Port: 8080      │
-└──────────────────┘
-```
+
+The Express server also serves the compiled `frontend/build`, so `http://localhost:5000` is the whole app in one origin. `k8s/` splits it into frontend / backend / flask-gemini / mysql / redis pods.
+
+---
+
+## 🔌 API
+
+| Method | Route | Purpose |
+|:---|:---|:---|
+| `POST` | `/api/auth/register` · `/login` · `/logout` | account + session |
+| `GET` | `/api/auth/verify` | validate a token on load |
+| `GET` `POST` `DELETE` | `/api/files` · `/api/files/upload` · `/api/files/download/:id` · `/api/files/:id` | file sync |
+| `GET` `POST` `PUT` `DELETE` | `/api/devices` · `/api/devices/register` · `/api/devices/:id/status` · `/api/devices/:id` | device registry |
+| `GET` | `/api/dashboard/stats` · `/storage-breakdown` · `/activity` | dashboard data |
+| `POST` | `/api/gemini` | `{ "mood": "…" }` → empathetic reply |
 
 ---
 
 ## 🚀 Getting Started
 
-### Prerequisites
-
-- Node.js 18+
-- Python 3.11+
-- Docker & Docker Compose
-- MySQL 8.0+ (or use Docker)
-
-### Installation
-
 ```bash
 git clone https://github.com/shaktivijayas/echomood.git
 cd echomood
-cp env.example .env
+cp env.example .env        # set GEMINI_API_KEY and a strong JWT_SECRET
+
+# backend (also serves the frontend build)
+cd backend && npm install && npm start        # http://localhost:5000
+
+# frontend dev server (optional, hot reload)
+cd frontend && npm install && npm start        # http://localhost:3000  → talks to :5000
 ```
 
-### Environment Variables
+Docker: `docker-compose up -d`. Kubernetes: `kubectl apply -f k8s/`.
+
+### Environment
 
 ```env
-# Google AI Studio → https://aistudio.google.com/
-GEMINI_API_KEY=your_gemini_api_key
-
-# Change in production
-JWT_SECRET=your_super_secret_jwt_key
-
-# Database
-MYSQL_ROOT_PASSWORD=rootpassword
-MYSQL_DATABASE=echomood
-MYSQL_USER=echomood
-MYSQL_PASSWORD=echomood_password
-
-# Nextcloud
-NEXTCLOUD_URL=http://localhost:8080
-NEXTCLOUD_USER=admin
-NEXTCLOUD_PASSWORD=admin
-```
-
-### Run with Docker Compose
-
-```bash
-# Start all 5 services
-docker-compose up -d
-
-# View logs
-docker-compose logs -f
-
-# Tear down
-docker-compose down
-```
-
-### Run Locally (Development)
-
-```bash
-# Install all dependencies
-npm install
-cd frontend && npm install && cd ..
-cd backend && npm install && cd ..
-cd flask-gemini && pip install -r requirements.txt && cd ..
-
-# Start all services
-npm run dev
-```
-
-**Service URLs:**
-- Frontend: `http://localhost:3000`
-- Backend API: `http://localhost:5000`
-- Flask AI: `http://localhost:5001`
-- Nextcloud: `http://localhost:8080`
-
----
-
-## ☸️ Kubernetes Deployment
-
-```bash
-# Apply all manifests
-kubectl apply -f k8s/
-
-# Check rollout
-kubectl get pods -n echomood
-kubectl get services -n echomood
-
-# Port-forward for local access
-kubectl port-forward -n echomood service/frontend-service 3000:3000
-kubectl port-forward -n echomood service/backend-service 5000:5000
+GEMINI_API_KEY=your_key        # https://aistudio.google.com/apikey
+JWT_SECRET=long_random_string
+PORT=5000
+FRONTEND_URL=http://localhost:3000
+UPLOAD_DIR=./uploads
 ```
 
 ---
@@ -173,56 +137,36 @@ kubectl port-forward -n echomood service/backend-service 5000:5000
 
 ```
 echomood/
-├── frontend/             # React + Tailwind + shadcn/ui
+├── frontend/               # React CRA app
 │   ├── src/
-│   │   ├── components/   # UI components (FileCard, MoodChat, DeviceList)
-│   │   ├── pages/        # Dashboard, Files, Devices, Mood
-│   │   └── hooks/        # useAuth, useFiles, useDevices
-│   └── Dockerfile
-├── backend/              # Node.js + Express API
-│   ├── src/
-│   │   ├── routes/       # auth, files, devices, dashboard
-│   │   ├── middleware/   # JWT validation, file upload
-│   │   └── models/       # MySQL query helpers
-│   └── Dockerfile
-├── flask-gemini/         # Python Flask + Gemini AI service
-│   ├── app.py            # /gemini endpoint
-│   ├── requirements.txt
-│   └── Dockerfile
-├── k8s/                  # Kubernetes manifests
-│   ├── namespace.yaml
-│   ├── frontend.yaml
-│   ├── backend.yaml
-│   ├── flask-gemini.yaml
-│   ├── mysql.yaml
-│   └── nextcloud.yaml
-├── docker-compose.yml
-├── env.example
-└── package.json
+│   │   ├── pages/          # Login · Dashboard · Files · Devices · Activity · MoodAI · Settings
+│   │   ├── components/     # Layout + ui/ (Radix-based Button, Card, Tabs, Progress, …)
+│   │   ├── contexts/       # AuthContext · ThemeContext
+│   │   └── lib/utils.js
+│   ├── build/              # compiled output (committed; served by the backend)
+│   ├── Dockerfile · nginx.conf
+├── backend/                # Express API
+│   ├── server.js           # app wiring + static serve of frontend/build
+│   ├── app.py              # parallel Flask Gemini service (for the K8s split)
+│   ├── config/database.js  # SQLite connect + table init
+│   ├── routes/             # auth · files · devices · dashboard · gemini
+│   ├── middleware/auth.js  # JWT verification
+│   └── database.sqlite
+├── k8s/                    # namespace · frontend · backend · flask-gemini · mysql · redis · ingress
+├── docker-compose.yml · env.example
+├── API.md · DEPLOYMENT.md
 ```
 
 ---
 
-## 🔌 API Reference
+## 📄 License
 
-| Method | Endpoint | Description |
-|:---|:---|:---|
-| `POST` | `/api/auth/register` | Create account |
-| `POST` | `/api/auth/login` | Get JWT token |
-| `GET` | `/api/files` | List user files |
-| `POST` | `/api/files/upload` | Upload and sync file |
-| `GET` | `/api/files/download/:id` | Download file |
-| `GET` | `/api/devices` | List registered devices |
-| `POST` | `/api/devices/register` | Register new device |
-| `GET` | `/api/dashboard/stats` | Storage + activity stats |
-| `POST` | `/gemini` | Send mood to AI companion |
+MIT (declared in `backend/package.json`; no root `LICENSE` file committed).
 
 ---
 
-## 👨‍💻 Author
-
-**Shakti Vijay A S** — [GitHub](https://github.com/shaktivijayas) · [LinkedIn](https://www.linkedin.com/in/shaktidev/)
-
 <div align="center">
-<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=100&section=footer&animation=twinkling" />
+
+`🌥️ files in sync · mind at ease`
+
 </div>
