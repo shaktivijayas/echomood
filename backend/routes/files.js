@@ -41,7 +41,7 @@ router.get('/', authenticateToken, async (req, res) => {
     const offset = (page - 1) * limit;
 
     let query = 'SELECT * FROM files WHERE user_id = ?';
-    let params = [req.user.userId];
+    let params = [req.user.id];
 
     if (search) {
       query += ' AND file_name LIKE ?';
@@ -55,7 +55,7 @@ router.get('/', authenticateToken, async (req, res) => {
 
     // Get total count for pagination
     let countQuery = 'SELECT COUNT(*) as total FROM files WHERE user_id = ?';
-    let countParams = [req.user.userId];
+    let countParams = [req.user.id];
 
     if (search) {
       countQuery += ' AND file_name LIKE ?';
@@ -92,13 +92,13 @@ router.post('/upload', authenticateToken, upload.single('file'), async (req, res
     // Save file info to database
     const result = await runQuery(
       'INSERT INTO files (user_id, file_name, file_path, file_size, file_type) VALUES (?, ?, ?, ?, ?)',
-      [req.user.userId, originalname, filePath, size, mimetype]
+      [req.user.id, originalname, filePath, size, mimetype]
     );
 
     // Log activity
     await runQuery(
       'INSERT INTO activity_log (user_id, action, description, metadata) VALUES (?, ?, ?, ?)',
-      [req.user.userId, 'file_uploaded', `File uploaded: ${originalname}`, JSON.stringify({ fileId: result.lastID, fileName: originalname, fileSize: size })]
+      [req.user.id, 'file_uploaded', `File uploaded: ${originalname}`, JSON.stringify({ fileId: result.lastID, fileName: originalname, fileSize: size })]
     );
 
     res.json({
@@ -124,7 +124,7 @@ router.get('/download/:id', authenticateToken, async (req, res) => {
 
     const file = await getRow(
       'SELECT * FROM files WHERE id = ? AND user_id = ?',
-      [fileId, req.user.userId]
+      [fileId, req.user.id]
     );
 
     if (!file) {
@@ -141,7 +141,7 @@ router.get('/download/:id', authenticateToken, async (req, res) => {
     // Log activity
     await runQuery(
       'INSERT INTO activity_log (user_id, action, description, metadata) VALUES (?, ?, ?, ?)',
-      [req.user.userId, 'file_downloaded', `File downloaded: ${file.file_name}`, JSON.stringify({ fileId: file.id, fileName: file.file_name })]
+      [req.user.id, 'file_downloaded', `File downloaded: ${file.file_name}`, JSON.stringify({ fileId: file.id, fileName: file.file_name })]
     );
 
     res.download(file.file_path, file.file_name);
@@ -158,7 +158,7 @@ router.delete('/:id', authenticateToken, async (req, res) => {
 
     const file = await getRow(
       'SELECT * FROM files WHERE id = ? AND user_id = ?',
-      [fileId, req.user.userId]
+      [fileId, req.user.id]
     );
 
     if (!file) {
@@ -175,13 +175,13 @@ router.delete('/:id', authenticateToken, async (req, res) => {
     // Delete from database
     await runQuery(
       'DELETE FROM files WHERE id = ? AND user_id = ?',
-      [fileId, req.user.userId]
+      [fileId, req.user.id]
     );
 
     // Log activity
     await runQuery(
       'INSERT INTO activity_log (user_id, action, description, metadata) VALUES (?, ?, ?, ?)',
-      [req.user.userId, 'file_deleted', `File deleted: ${file.file_name}`, JSON.stringify({ fileId: file.id, fileName: file.file_name })]
+      [req.user.id, 'file_deleted', `File deleted: ${file.file_name}`, JSON.stringify({ fileId: file.id, fileName: file.file_name })]
     );
 
     res.json({ message: 'File deleted successfully' });

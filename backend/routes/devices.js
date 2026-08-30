@@ -9,7 +9,7 @@ router.get('/', authenticateToken, async (req, res) => {
   try {
     const devices = await getAllRows(
       'SELECT * FROM devices WHERE user_id = ? ORDER BY last_seen DESC',
-      [req.user.userId]
+      [req.user.id]
     );
 
     res.json({ devices });
@@ -44,7 +44,7 @@ router.post('/register', authenticateToken, async (req, res) => {
       // Log activity
       await runQuery(
         'INSERT INTO activity_log (user_id, action, description, metadata) VALUES (?, ?, ?, ?)',
-        [req.user.userId, 'device_updated', `Device updated: ${deviceName}`, JSON.stringify({ deviceName, deviceType, deviceId })]
+        [req.user.id, 'device_updated', `Device updated: ${deviceName}`, JSON.stringify({ deviceName, deviceType, deviceId })]
       );
 
       res.json({ message: 'Device updated successfully' });
@@ -52,13 +52,13 @@ router.post('/register', authenticateToken, async (req, res) => {
       // Create new device
       const result = await runQuery(
         'INSERT INTO devices (user_id, device_name, device_type, device_id) VALUES (?, ?, ?, ?)',
-        [req.user.userId, deviceName, deviceType, deviceId]
+        [req.user.id, deviceName, deviceType, deviceId]
       );
 
       // Log activity
       await runQuery(
         'INSERT INTO activity_log (user_id, action, description, metadata) VALUES (?, ?, ?, ?)',
-        [req.user.userId, 'device_registered', `Device registered: ${deviceName}`, JSON.stringify({ deviceId: result.lastID, deviceName, deviceType, deviceId })]
+        [req.user.id, 'device_registered', `Device registered: ${deviceName}`, JSON.stringify({ deviceId: result.lastID, deviceName, deviceType, deviceId })]
       );
 
       res.status(201).json({
@@ -90,7 +90,7 @@ router.put('/:id/status', authenticateToken, async (req, res) => {
     // Check if device belongs to user
     const device = await getRow(
       'SELECT * FROM devices WHERE id = ? AND user_id = ?',
-      [id, req.user.userId]
+      [id, req.user.id]
     );
 
     if (!device) {
@@ -106,7 +106,7 @@ router.put('/:id/status', authenticateToken, async (req, res) => {
     // Log activity
     await runQuery(
       'INSERT INTO activity_log (user_id, action, description, metadata) VALUES (?, ?, ?, ?)',
-      [req.user.userId, isActive ? 'device_activated' : 'device_deactivated', 
+      [req.user.id, isActive ? 'device_activated' : 'device_deactivated', 
        `Device ${isActive ? 'activated' : 'deactivated'}: ${device.device_name}`, 
        JSON.stringify({ deviceId: id, deviceName: device.device_name, isActive })]
     );
@@ -126,7 +126,7 @@ router.delete('/:id', authenticateToken, async (req, res) => {
     // Check if device belongs to user
     const device = await getRow(
       'SELECT * FROM devices WHERE id = ? AND user_id = ?',
-      [id, req.user.userId]
+      [id, req.user.id]
     );
 
     if (!device) {
@@ -136,13 +136,13 @@ router.delete('/:id', authenticateToken, async (req, res) => {
     // Delete device
     await runQuery(
       'DELETE FROM devices WHERE id = ? AND user_id = ?',
-      [id, req.user.userId]
+      [id, req.user.id]
     );
 
     // Log activity
     await runQuery(
       'INSERT INTO activity_log (user_id, action, description, metadata) VALUES (?, ?, ?, ?)',
-      [req.user.userId, 'device_removed', `Device removed: ${device.device_name}`, JSON.stringify({ deviceId: id, deviceName: device.device_name })]
+      [req.user.id, 'device_removed', `Device removed: ${device.device_name}`, JSON.stringify({ deviceId: id, deviceName: device.device_name })]
     );
 
     res.json({ message: 'Device removed successfully' });
@@ -159,7 +159,7 @@ router.get('/:id', authenticateToken, async (req, res) => {
 
     const device = await getRow(
       'SELECT * FROM devices WHERE id = ? AND user_id = ?',
-      [id, req.user.userId]
+      [id, req.user.id]
     );
 
     if (!device) {

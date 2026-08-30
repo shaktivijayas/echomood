@@ -134,7 +134,7 @@ router.post('/logout', authenticateToken, async (req, res) => {
     // Log activity
     await runQuery(
       'INSERT INTO activity_log (user_id, action, description) VALUES (?, ?, ?)',
-      [req.user.userId, 'user_logout', 'User logged out']
+      [req.user.id, 'user_logout', 'User logged out']
     );
 
     res.json({ message: 'Logout successful' });

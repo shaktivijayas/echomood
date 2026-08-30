@@ -7,7 +7,7 @@ const router = express.Router();
 // Get dashboard stats
 router.get('/stats', authenticateToken, async (req, res) => {
   try {
-    const userId = req.user.userId;
+    const userId = req.user.id;
 
     // Get storage usage
     const storageResult = await getRow(
@@ -76,13 +76,13 @@ router.get('/activity', authenticateToken, async (req, res) => {
        WHERE user_id = ? 
        ORDER BY created_at DESC 
        LIMIT ? OFFSET ?`,
-      [req.user.userId, parseInt(limit), parseInt(offset)]
+      [req.user.id, parseInt(limit), parseInt(offset)]
     );
 
     // Get total count
     const countResult = await getRow(
       'SELECT COUNT(*) as total FROM activity_log WHERE user_id = ?',
-      [req.user.userId]
+      [req.user.id]
     );
     const total = countResult.total;
 
@@ -129,7 +129,7 @@ router.get('/storage-breakdown', authenticateToken, async (req, res) => {
        WHERE user_id = ? 
        GROUP BY category 
        ORDER BY total_size DESC`,
-      [req.user.userId]
+      [req.user.id]
     );
 
     const formattedBreakdown = breakdown.map(item => ({
