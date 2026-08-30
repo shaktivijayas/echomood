@@ -38,9 +38,16 @@ Two things a person juggles daily — their **files** and their **headspace**. e
 
 ## 📸 The app, running
 
-> The React frontend, built and served by the Express backend on `:5000`. Auth-gated — the rest of the app (Dashboard, Files, Devices, Activity, Mood AI, Settings) lives behind this.
+> Signed in against a live backend seeded with three devices and three synced files — the Dashboard with its sidebar (Files · Devices · Activity · Settings · Mood AI), stat cards, and Quick Actions.
 
-<img src="docs/screenshots/login.png" alt="echomood / Mood Helper — sign-in screen" width="760" />
+<img src="docs/screenshots/dashboard.png" alt="echomood / Mood Helper dashboard, signed in" width="900" />
+
+<details>
+<summary>Sign-in screen</summary>
+
+<img src="docs/screenshots/login.png" alt="echomood / Mood Helper — sign-in screen" width="640" />
+
+</details>
 
 ---
 
